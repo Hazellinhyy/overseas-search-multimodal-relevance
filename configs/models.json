@@ -1,0 +1,2 @@
+{"adapters": ["openai_compatible", "local_service", "mock_test_only"], "training_enabled": false}
+

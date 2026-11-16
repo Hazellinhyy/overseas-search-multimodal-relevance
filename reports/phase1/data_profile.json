@@ -1,0 +1,45 @@
+{
+  "sample_count": 300,
+  "language_distribution": {
+    "pt_or_latin_unknown": 222,
+    "pt": 78
+  },
+  "scene_distribution": {
+    "general_search": 300,
+    "post_watch_search": 0
+  },
+  "duplicate_item_ids": 0,
+  "missing_fields": {
+    "query": 0,
+    "item_id": 0,
+    "doc_title": 83,
+    "doc_caption": 236,
+    "doc_asr": 93,
+    "doc_ocr": 300,
+    "doc_ocr_all": 35
+  },
+  "modality_coverage": {
+    "doc_title": 0.7233333333333334,
+    "doc_caption": 0.21333333333333335,
+    "doc_asr": 0.69,
+    "doc_ocr": 0.0,
+    "doc_ocr_all": 0.8833333333333333
+  },
+  "refer_video_coverage": 0.0,
+  "video": {
+    "expected": 300,
+    "found": 295,
+    "missing": 5,
+    "decode_success": 295,
+    "decode_success_rate": 1.0,
+    "format_distribution": {
+      "mov,mp4,m4a,3gp,3g2,mj2": 295
+    },
+    "duration_seconds": {
+      "min": 4.968005,
+      "max": 600.0,
+      "average": 80.97283450847458
+    },
+    "errors": []
+  }
+}

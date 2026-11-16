@@ -1,0 +1,12 @@
+name: 缺陷
+description: 报告可复现问题（不得附内部敏感数据）
+body:
+  - type: textarea
+    id: description
+    attributes: {label: 问题描述}
+    validations: {required: true}
+  - type: textarea
+    id: reproduction
+    attributes: {label: 复现步骤}
+    validations: {required: true}
+

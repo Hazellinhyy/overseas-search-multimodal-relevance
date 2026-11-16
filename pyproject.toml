@@ -1,0 +1,45 @@
+[build-system]
+requires = ["setuptools>=75", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "overseas-search-relevance"
+version = "0.1.0"
+description = "海外搜索多模态相关性标注与评测系统"
+readme = "README.md"
+requires-python = ">=3.11"
+license = {text = "Proprietary"}
+authors = [{name = "Overseas Search Relevance Team"}]
+dependencies = []
+
+[project.optional-dependencies]
+dev = ["build>=1.2", "mypy>=1.13", "pytest>=8.3", "pytest-cov>=6", "ruff>=0.8", "scikit-learn>=1.5"]
+
+[project.scripts]
+osr = "overseas_search_relevance.cli.main:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py311"
+[tool.ruff.lint]
+select = ["E", "F", "I", "B", "UP", "SIM"]
+
+[tool.mypy]
+python_version = "3.11"
+strict = true
+packages = ["overseas_search_relevance"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-ra --strict-markers"
+
+[tool.coverage.run]
+source = ["overseas_search_relevance"]
+branch = true
+[tool.coverage.report]
+show_missing = true
+fail_under = 80
+

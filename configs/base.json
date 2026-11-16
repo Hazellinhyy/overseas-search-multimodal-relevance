@@ -1,0 +1,7 @@
+{
+  "rule_version": "1.0.0",
+  "prompt_version": "1.0.0",
+  "media": {"max_frames": 8, "max_width": 1280, "timeout_seconds": 60},
+  "batch": {"max_concurrency": 4, "retry_count": 2, "request_budget": 300}
+}
+
