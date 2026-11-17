@@ -5,10 +5,10 @@
 ## 发布信息
 
 - 目标仓库：`https://github.com/Hazellinhyy/overseas-search-multimodal-relevance`
-- 实际远程名称：待远程检查后填写
+- 实际远程名称：`github-release`
 - 发布分支：`feature/phase2f-kml-release`
-- Commit SHA：待提交后填写
-- 推送结果：待认证与远程检查后填写
+- Commit SHA：`4c764267c8362301585131d99ace3f1ecd29ca7b`（工程提交）
+- 推送结果：已成功推送到目标 Private 仓库；本报告更新提交随后同步推送。
 
 ## 工程变更
 
