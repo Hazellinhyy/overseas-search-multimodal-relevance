@@ -48,9 +48,12 @@ def resolve_runtime_config(environ: dict[str, str] | None = None) -> dict[str, A
     env = environ or os.environ
     gpu_count = parse_positive_int(env.get("GPU_COUNT"), "GPU_COUNT", maximum=1024)
     tp = parse_positive_int(env.get("TENSOR_PARALLEL_SIZE"), "TENSOR_PARALLEL_SIZE", maximum=1024)
-    pp = parse_positive_int(
-        env.get("PIPELINE_PARALLEL_SIZE"), "PIPELINE_PARALLEL_SIZE", maximum=1024
-    ) or 1
+    pp = (
+        parse_positive_int(
+            env.get("PIPELINE_PARALLEL_SIZE"), "PIPELINE_PARALLEL_SIZE", maximum=1024
+        )
+        or 1
+    )
     if tp and gpu_count and (tp * pp > gpu_count or gpu_count % (tp * pp) != 0):
         raise ValueError(
             "TENSOR_PARALLEL_SIZE × PIPELINE_PARALLEL_SIZE 必须不超过 GPU_COUNT 且整除 GPU_COUNT"
@@ -78,9 +81,7 @@ def resolve_runtime_config(environ: dict[str, str] | None = None) -> dict[str, A
         "model_download_enabled": parse_bool(
             env.get("MODEL_DOWNLOAD_ENABLED"), "MODEL_DOWNLOAD_ENABLED"
         ),
-        "remote_api_enabled": parse_bool(
-            env.get("REMOTE_API_ENABLED"), "REMOTE_API_ENABLED"
-        ),
+        "remote_api_enabled": parse_bool(env.get("REMOTE_API_ENABLED"), "REMOTE_API_ENABLED"),
         "enable_training": parse_bool(env.get("ENABLE_TRAINING"), "ENABLE_TRAINING"),
     }
 
