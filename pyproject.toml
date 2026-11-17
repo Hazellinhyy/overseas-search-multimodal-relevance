@@ -14,6 +14,7 @@ dependencies = []
 
 [project.optional-dependencies]
 dev = ["build>=1.2", "mypy>=1.13", "pytest>=8.3", "pytest-cov>=6", "ruff>=0.8", "scikit-learn>=1.5"]
+gpu = ["torch>=2.4", "transformers>=4.57", "accelerate>=1.0", "safetensors>=0.4", "pillow>=10"]
 
 [project.scripts]
 osr = "overseas_search_relevance.cli.main:main"
