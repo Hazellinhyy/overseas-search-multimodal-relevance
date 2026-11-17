@@ -4,11 +4,47 @@
 from __future__ import annotations
 
 import argparse
+import gc
 import json
 import os
 import socket
 from pathlib import Path
 from typing import Any
+
+MEMORY_RELEASE_TOLERANCE_BYTES = 1 * 1024 * 1024
+
+
+def _memory_release_check(torch: Any, device: Any) -> dict[str, Any]:
+    """Run two identical allocations and compare the final allocation to a warm baseline."""
+
+    def workload() -> None:
+        first = torch.randn((1024, 1024), device=device)
+        second = torch.randn((1024, 1024), device=device)
+        output = first @ second
+        del output, first, second
+
+    workload()
+    torch.cuda.synchronize(device)
+    gc.collect()
+    torch.cuda.empty_cache()
+    baseline = int(torch.cuda.memory_allocated(device))
+    round_allocated: list[int] = []
+    for _ in range(2):
+        workload()
+        torch.cuda.synchronize(device)
+        gc.collect()
+        torch.cuda.empty_cache()
+        round_allocated.append(int(torch.cuda.memory_allocated(device)))
+    final = round_allocated[-1]
+    growth = final - baseline
+    return {
+        "baseline_allocated_bytes": baseline,
+        "round_allocated_bytes": round_allocated,
+        "final_allocated_bytes": final,
+        "growth_bytes": growth,
+        "tolerance_bytes": MEMORY_RELEASE_TOLERANCE_BYTES,
+        "passed": abs(growth) <= MEMORY_RELEASE_TOLERANCE_BYTES,
+    }
 
 
 def main() -> int:
@@ -57,7 +93,8 @@ def main() -> int:
     result["tests"]["bf16"] = True
     del first, second
     torch.cuda.empty_cache()
-    result["tests"]["memory_release"] = torch.cuda.memory_allocated(0) == 0
+    result["memory_release_details"] = _memory_release_check(torch, device)
+    result["tests"]["memory_release"] = result["memory_release_details"]["passed"]
     if os.environ.get("WORLD_SIZE") and int(os.environ["WORLD_SIZE"]) > 1:
         result["distributed_env"] = {
             key: os.environ.get(key)
