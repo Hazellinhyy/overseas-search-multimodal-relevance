@@ -13,10 +13,10 @@ from typing import Any
 
 def main() -> int:
     parser = argparse.ArgumentParser()
-    parser.add_argument("--expected-gpus", type=int, default=8)
+    parser.add_argument("--gpu-count", type=int)
     parser.add_argument("--output", type=Path, default=Path("reports/phase1/gpu_diagnose.json"))
     args = parser.parse_args()
-    result: dict[str, Any] = {"host": socket.gethostname(), "expected_gpus": args.expected_gpus}
+    result: dict[str, Any] = {"host": socket.gethostname(), "requested_gpu_count": args.gpu_count}
     try:
         import torch  # type: ignore[import-not-found]
     except ImportError as error:
@@ -29,7 +29,8 @@ def main() -> int:
         "version": torch.version.cuda,
         "count": torch.cuda.device_count(),
     }
-    if not torch.cuda.is_available() or torch.cuda.device_count() != args.expected_gpus:
+    visible = torch.cuda.device_count()
+    if not torch.cuda.is_available() or (args.gpu_count is not None and visible < args.gpu_count):
         result["status"] = "BLOCKED"
         result["error"] = "GPU 数量或 CUDA 不满足预期"
         return _write(args.output, result)
@@ -78,7 +79,7 @@ def main() -> int:
             result["nccl_error"] = f"{type(error).__name__}: {error}"
     else:
         result["nccl_note"] = (
-            "未在分布式启动环境中执行 NCCL；请用 torchrun --nproc_per_node=8 运行本脚本。"
+            f"未在分布式启动环境中执行 NCCL；请用 torchrun --nproc_per_node={visible} 运行本脚本。"
         )
     result["status"] = "READY" if all(result["tests"].values()) else "PARTIAL"
     return _write(args.output, result)

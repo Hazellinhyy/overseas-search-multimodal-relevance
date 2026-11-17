@@ -14,10 +14,16 @@ from overseas_search_relevance.infrastructure.gpu import (
 def main() -> int:
     parser = argparse.ArgumentParser()
     parser.add_argument("--code-root", type=Path, default=Path("/code"))
+    parser.add_argument("--gpu-count", type=int)
     parser.add_argument("--output", type=Path, default=Path("reports/phase1/gpu_preflight.json"))
     args = parser.parse_args()
     audit = audit_environment(args.code_root)
     profile = choose_safe_profile(audit)
+    if args.gpu_count is not None and audit["gpu"]["count"] < args.gpu_count:
+        profile = {
+            "status": "BLOCKED",
+            "reason": f"可见 GPU 数量不足: 需要 {args.gpu_count}，实际 {audit['gpu']['count']}",
+        }
     write_audit(args.output, audit, profile)
     print(profile)
     return 0 if profile["status"] == "READY" else 2
