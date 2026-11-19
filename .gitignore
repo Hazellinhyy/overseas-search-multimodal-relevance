@@ -10,10 +10,11 @@ dist/
 build/
 *.egg-info/
 .env
+.DS_Store
 data/raw/
 data/external/
-artifacts/cache/
-artifacts/frames/
+artifacts/
 reports/phase1/*.jsonl
 reports/phase1/*.csv
+reports/phase1/*evaluation_report.md
 

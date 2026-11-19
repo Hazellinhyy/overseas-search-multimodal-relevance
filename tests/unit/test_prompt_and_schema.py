@@ -9,6 +9,9 @@ def test_prompt_preserves_query_and_mode() -> None:
     assert "ação original" in prompt
     assert "纯文本" in prompt
     assert "不得编造" in prompt
+    assert "3分：核心实体正确" in prompt
+    assert "0分：核心实体、主题或主要意图不一致" in prompt
+    assert "只输出一个 JSON 对象" in prompt
 
 
 def test_input_validation() -> None:

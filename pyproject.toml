@@ -18,6 +18,7 @@ gpu = ["torch>=2.4", "transformers>=4.57", "accelerate>=1.0", "safetensors>=0.4"
 
 [project.scripts]
 osr = "overseas_search_relevance.cli.main:main"
+osr-web = "overseas_search_relevance.web:main"
 
 [tool.setuptools.packages.find]
 where = ["src"]

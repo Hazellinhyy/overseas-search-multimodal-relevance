@@ -79,6 +79,7 @@ def run_batch(
                             "relevance_label": None,
                             "processing_status": "failed",
                             "error_code": type(error).__name__,
+                            "error_message": str(error),
                         }
                     else:
                         time.sleep(min(0.1 * 2**attempt, 1.0))
